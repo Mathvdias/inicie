@@ -7,26 +7,33 @@ import 'package:inicie/features/tasks/presentation/views/task_list_page.dart';
 import 'package:inicie/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:timezone/data/latest.dart' as tz;
 
+import 'package:inicie/utils/app_logger.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  logger.i("main: WidgetsFlutterBinding ensured.");
 
   setupLocator();
+  logger.i("main: Service locator setup complete.");
 
   tz.initializeTimeZones();
+  logger.i("main: Timezones initialized.");
 
   await getIt<StorageService>().init();
+  logger.i("main: StorageService initialized.");
 
   await getIt<NotificationService>().init();
+  logger.i("main: NotificationService initialized.");
 
   getIt.registerSingleton<ValueNotifier<Locale>>(
-    ValueNotifier<Locale>(const Locale('en')),
+    ValueNotifier<Locale>(const Locale('pt', 'BR')),
   );
 
-  runApp(const MyApp());
+  runApp(const InicieApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class InicieApp extends StatelessWidget {
+  const InicieApp({super.key});
 
   @override
   Widget build(BuildContext context) {

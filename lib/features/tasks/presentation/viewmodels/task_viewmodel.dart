@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:inicie/core/services/notification_service.dart';
 import 'package:inicie/features/tasks/data/models/task_model.dart';
 import 'package:inicie/features/tasks/domain/repositories/task_repository.dart';
+import 'package:inicie/utils/app_logger.dart';
 
 enum ViewState { idle, loading, loadingMore, error }
 
@@ -69,6 +70,7 @@ class TaskViewModel extends ChangeNotifier {
     String? description,
     DateTime? reminderDateTime,
   }) async {
+    logger.d("TaskViewModel: addTask called with reminderDateTime: $reminderDateTime");
     if (title.isEmpty) {
       _errorMessage = 'Title cannot be empty.';
       _setState(ViewState.error);
@@ -83,6 +85,7 @@ class TaskViewModel extends ChangeNotifier {
       );
       await _taskRepository.addTask(newTask);
       if (newTask.reminderDateTime != null) {
+        logger.d("TaskViewModel: Calling scheduleNotification for task ${newTask.id}");
         await _notificationService.scheduleNotification(newTask);
       }
       await loadTasks();
@@ -93,12 +96,15 @@ class TaskViewModel extends ChangeNotifier {
   }
 
   Future<void> updateTask(Task task) async {
+    logger.d("TaskViewModel: updateTask called for task ${task.id} with reminderDateTime: ${task.reminderDateTime}");
     try {
       _setState(ViewState.loading);
       await _taskRepository.updateTask(task);
       if (task.reminderDateTime != null) {
+        logger.d("TaskViewModel: Calling scheduleNotification for task ${task.id}");
         await _notificationService.scheduleNotification(task);
       } else {
+        logger.d("TaskViewModel: Calling cancelNotification for task ${task.id}");
         await _notificationService.cancelNotification(task.id);
       }
       await loadTasks();

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:inicie/core/di/service_locator.dart';
 import 'package:inicie/core/responsive/responsive_layout.dart';
 import 'package:inicie/core/services/notification_service.dart';
-import 'package:inicie/features/tasks/data/models/task_model.dart';
 import 'package:inicie/features/tasks/presentation/viewmodels/task_viewmodel.dart';
 import 'package:inicie/features/tasks/presentation/widgets/add_edit_task_sheet.dart';
 import 'package:inicie/features/tasks/presentation/widgets/task_list_item.dart';
@@ -21,7 +20,7 @@ class _TaskListPageState extends State<TaskListPage>
   late final TaskViewModel _viewModel;
   final _scrollController = ScrollController();
   final NotificationService _notificationService = getIt<NotificationService>();
-  
+
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -134,8 +133,6 @@ class _TaskListPageState extends State<TaskListPage>
       ),
     );
   }
-
-  
 
   @override
   Widget build(BuildContext context) {
@@ -270,5 +267,3 @@ class _TaskListPageState extends State<TaskListPage>
     );
   }
 }
-
-

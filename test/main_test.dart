@@ -10,7 +10,7 @@ void main() {
 
   testWidgets('MyApp builds correctly', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(const InicieApp());
 
     // Verify that our app has a title.
     expect(find.byType(MaterialApp), findsOneWidget);
