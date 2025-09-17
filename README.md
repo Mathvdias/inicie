@@ -54,7 +54,7 @@ For simplicity and given the current scope of the application, explicit use case
 
 1.  Clone the repository:
     ```bash
-    git clone https://github.com/your-username/inicie.git # Replace with your repository URL
+    git clone https://github.com/Mathvdias/inicie.git
     cd inicie
     ```
 2.  Get Flutter packages:
@@ -103,18 +103,50 @@ genthtml coverage/lcov.info -o coverage/html && open coverage/html/index.html
 <table>
   <tr>
     <td>
-      <img src="path/to/your/screenshot1.png" width="100%" alt="Screenshot 1">
+      <img src="https://github.com/user-attachments/assets/fdf69369-08db-4447-822d-3c9d9b992cf7" width="100%" alt="Screenshot 1">
     </td>
     <td>
-      <img src="path/to/your/screenshot2.png" width="100%" alt="Screenshot 2">
+      <img src="https://github.com/user-attachments/assets/d4d4fd97-5c33-47ca-bb45-ff3b3438fa7f" width="100%" alt="Screenshot 2">
     </td>
   </tr>
   <tr>
     <td>
-      <img src="path/to/your/screenshot3.png" width="100%" alt="Screenshot 3">
+      <img src="https://github.com/user-attachments/assets/0f2a5eb3-b6b6-4be6-8bdb-42c9b102dedf" width="100%" alt="Screenshot 3">
     </td>
     <td>
-      <img src="path/to/your/screenshot4.png" width="100%" alt="Screenshot 4">
+      <img src="https://github.com/user-attachments/assets/499f833d-a8a6-4bf4-909b-8b84f7f78368" width="100%" alt="Screenshot 4">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/7a433b70-8984-42c6-9ed6-754331472589" width="100%" alt="Screenshot 5">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/77a99faa-04f7-48a8-9ffe-68ead76e49e2" width="100%" alt="Screenshot 6">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/18d21069-d332-4523-900a-774526a3aa1d" width="100%" alt="Screenshot 7">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/0f9aed82-e1f4-4710-9457-4027eb2726d0" width="100%" alt="Screenshot 8">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/523655fd-c9af-493e-9378-0c537cf912e8" width="100%" alt="Screenshot 9">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/49ff9a30-634a-41b3-ba7d-b53f1996a04f" width="100%" alt="Screenshot 10">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="https://github.com/user-attachments/assets/77e928c5-4624-4064-9916-768b99108c46" width="100%" alt="Screenshot 11">
+    </td>
+    <td>
+      <img src="https://github.com/user-attachments/assets/f559cc67-a340-40a9-9d60-191c09e9403f" width="100%" alt="Screenshot 12">
     </td>
   </tr>
   <!-- Add more rows and images as needed -->
