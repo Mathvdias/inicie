@@ -179,10 +179,7 @@ class _TaskListPageState extends State<TaskListPage>
           return ResponsiveLayout(
             mobileBody: _buildTaskList(l10n),
             desktopBody: Center(
-              child: SizedBox(
-                width: 600,
-                child: _buildTaskList(l10n),
-              ),
+              child: SizedBox(width: 600, child: _buildTaskList(l10n)),
             ),
           );
         },

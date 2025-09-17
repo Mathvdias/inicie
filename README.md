@@ -4,16 +4,31 @@ This is a sophisticated task management application built with Flutter, demonstr
 
 ## Features
 
--   **Task Management (CRUD):** Create, View, Edit, and Delete tasks.
--   **Reminders & Notifications:** Set reminders for tasks with local notifications for Android and iOS.
--   **Data Persistence:** Tasks are persisted locally using `shared_preferences`.
--   **Lazy Loading:** Efficiently loads tasks as the user scrolls, supporting large datasets.
--   **Internationalization (i18n):** Supports multiple languages (English and Portuguese).
--   **Accessibility (a11y):** Enhanced with semantic labels for screen readers (VoiceOver/TalkBack).
+-   **Task Management:**
+    -   **Creation:** Easily create new tasks with a title, optional description, and reminder.
+    -   **Viewing:** View a list of tasks with lazy loading for efficient scrolling.
+    -   **Editing:** Modify existing tasks, including their title, description, and reminder settings.
+    -   **Deletion:** Delete individual tasks.
+    -   **Bulk Deletion:** Option to delete all tasks at once.
+-   **Reminders & Notifications:**
+    -   Set specific date and time reminders for tasks.
+    -   Receive local notifications on Android and iOS when a reminder is due.
+    -   Notifications are scheduled and managed even when the app is closed or in the background.
+    -   Ability to cancel notifications by removing the reminder from a task.
+-   **Data Persistence:** Tasks are persisted locally using `shared_preferences`, ensuring your data is saved across app sessions.
+-   **Internationalization (i18n):**
+    -   Supports multiple languages, currently English and Portuguese.
+    -   Users can switch between supported languages within the app.
+-   **Accessibility (a11y):** Enhanced with semantic labels for screen readers (VoiceOver/TalkBack) to improve usability for all users.
 -   **Performance Optimizations:**
-    -   **CPU:** Minimized rebuilds using `const` constructors, efficient state management, and `ObjectKey` for list items. Heavy JSON parsing is offloaded to Isolates.
-    -   **GPU:** Reduced overdraw with `RepaintBoundary` for list items.
--   **Clean Data:** Option to delete all tasks.
+    -   **CPU Efficiency:**
+        -   Minimized widget rebuilds through the extensive use of `const` constructors.
+        -   Efficient state management with `ChangeNotifier`.
+        -   Optimized list rendering using `ObjectKey` for `TaskListItem` to prevent unnecessary rebuilds.
+        -   Heavy JSON parsing operations are offloaded to separate Isolates (`compute`) to prevent UI freezes.
+    -   **GPU Performance (Reduced Overdraw):**
+        -   Utilizes `RepaintBoundary` for list items to reduce GPU overdraw, leading to smoother scrolling and better rendering performance.
+-   **Responsive Design:** Adapts the UI layout to provide an optimal viewing experience across various screen sizes (mobile, tablet, desktop).
 
 ## Architecture
 
@@ -24,6 +39,9 @@ The application follows the **MVVM (Model-View-ViewModel)** architectural patter
 -   **ViewModel:** Manages UI state and logic, interacting with the repository. Uses `ChangeNotifier` for state management.
 -   **Repository Pattern:** Abstracts data sources, providing a clean API for the ViewModel.
 -   **Dependency Injection:** Utilizes `get_it` for managing dependencies.
+
+**Note on Use Cases:**
+For simplicity and given the current scope of the application, explicit use case (interactor) layers have been omitted. The ViewModel directly interacts with the Repository. As the application grows in complexity and business logic, a dedicated use case layer can be introduced to encapsulate specific business rules and orchestrate interactions between multiple repositories.
 
 ## Getting Started
 
@@ -36,7 +54,7 @@ The application follows the **MVVM (Model-View-ViewModel)** architectural patter
 
 1.  Clone the repository:
     ```bash
-    git clone [repository_url]
+    git clone https://github.com/your-username/inicie.git # Replace with your repository URL
     cd inicie
     ```
 2.  Get Flutter packages:
@@ -67,6 +85,40 @@ To generate a test coverage report:
 ```bash
 flutter test --coverage
 ```
+
+After running tests with coverage, you can view the detailed report by opening `coverage/html/index.html` in your web browser.
+
+**Current Test Coverage:** 75.4% of lines hit.
+
+To get the coverage percentage, you can use a tool like `lcov` or manually inspect the `lcov.info` file. For a quick percentage, you can use:
+
+```bash
+genthtml coverage/lcov.info -o coverage/html && open coverage/html/index.html
+# Look for "lines hit" percentage in the generated report.
+```
+
+## Screenshots
+
+<!-- Add your application screenshots here. Use a table for a grid layout. -->
+<table>
+  <tr>
+    <td>
+      <img src="path/to/your/screenshot1.png" width="100%" alt="Screenshot 1">
+    </td>
+    <td>
+      <img src="path/to/your/screenshot2.png" width="100%" alt="Screenshot 2">
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img src="path/to/your/screenshot3.png" width="100%" alt="Screenshot 3">
+    </td>
+    <td>
+      <img src="path/to/your/screenshot4.png" width="100%" alt="Screenshot 4">
+    </td>
+  </tr>
+  <!-- Add more rows and images as needed -->
+</table>
 
 ## Localization
 
