@@ -27,5 +27,6 @@
   "reminderOn": "Lembrete em {date}",
   "expand": "Expandir",
   "collapse": "Recolher",
-  "selectLanguage": "Selecionar Idioma"
+  "selectLanguage": "Selecionar Idioma",
+  "edit": "Editar"
 }

@@ -97,4 +97,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get selectLanguage => 'Selecionar Idioma';
+
+  @override
+  String get edit => 'Editar';
 }

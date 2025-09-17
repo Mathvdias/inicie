@@ -27,5 +27,6 @@
   "reminderOn": "Reminder on {date}",
   "expand": "Expand",
   "collapse": "Collapse",
-  "selectLanguage": "Select Language"
+  "selectLanguage": "Select Language",
+  "edit": "Edit"
 }

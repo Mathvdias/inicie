@@ -124,36 +124,14 @@ class _TaskListItemState extends State<TaskListItem>
                           : Colors.white,
                     ),
                   ),
-                  subtitle: widget.task.reminderDateTime != null
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Chip(
-                            avatar: Icon(
-                              EvaIcons.bellOutline,
-                              size: 16,
-                              color: theme.colorScheme.onSecondary,
-                            ),
-                            label: Text(
-                              DateFormat.yMd().add_jm().format(
-                                widget.task.reminderDateTime!,
-                              ),
-                              style: TextStyle(
-                                color: theme.colorScheme.onSecondary,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            backgroundColor: theme.colorScheme.secondary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 4,
-                            ),
-                          ),
-                        )
-                      : null,
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 32.0, right: 16.0),
+                  child: Row(
                     children: [
+                      if (widget.task.reminderDateTime != null && !_isExpanded)
+                        Icon(EvaIcons.bell, color: Colors.yellow, size: 18),
+                      const Spacer(),
                       IconButton(
                         icon: const Icon(EvaIcons.editOutline),
                         tooltip: l10n.editTask,
@@ -182,22 +160,44 @@ class _TaskListItemState extends State<TaskListItem>
                 SizeTransition(
                   sizeFactor: _animation,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0,
-                      vertical: 8.0,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (widget.task.description != null &&
                             widget.task.description!.isNotEmpty)
-                          Text(
-                            widget.task.description!,
-                            style: TextStyle(
-                              color: widget.task.isCompleted
-                                  ? Colors.white38
-                                  : Colors.white70,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 8.0),
+                            child: Text(
+                              widget.task.description!,
+                              style: TextStyle(
+                                color: widget.task.isCompleted
+                                    ? Colors.white38
+                                    : Colors.white70,
+                              ),
                             ),
+                          ),
+                        if (widget.task.reminderDateTime != null)
+                          Row(
+                            children: [
+                              Icon(
+                                EvaIcons.bell,
+                                color: Colors.yellow,
+                                size: 18,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                DateFormat(
+                                  'dd/MM/yyyy HH:mm',
+                                ).format(widget.task.reminderDateTime!),
+                                style: TextStyle(
+                                  color: theme.colorScheme.onSurface
+                                      .withOpacity(0.6),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                       ],
                     ),
