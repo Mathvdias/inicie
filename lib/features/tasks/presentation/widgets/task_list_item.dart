@@ -124,6 +124,33 @@ class _TaskListItemState extends State<TaskListItem>
                           : Colors.white,
                     ),
                   ),
+                  subtitle: widget.task.reminderDateTime != null
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 4.0),
+                          child: Chip(
+                            avatar: Icon(
+                              EvaIcons.bellOutline,
+                              size: 16,
+                              color: theme.colorScheme.onSecondary,
+                            ),
+                            label: Text(
+                              DateFormat.yMd().add_jm().format(
+                                widget.task.reminderDateTime!,
+                              ),
+                              style: TextStyle(
+                                color: theme.colorScheme.onSecondary,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            backgroundColor: theme.colorScheme.secondary,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 4,
+                            ),
+                          ),
+                        )
+                      : null,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -142,8 +169,8 @@ class _TaskListItemState extends State<TaskListItem>
                       IconButton(
                         icon: Icon(
                           _isExpanded
-                              ? EvaIcons.arrowUpOutline
-                              : EvaIcons.arrowDownOutline,
+                              ? EvaIcons.arrowIosUpwardOutline
+                              : EvaIcons.arrowIosDownwardOutline,
                         ),
                         tooltip: _isExpanded ? l10n.collapse : l10n.expand,
                         onPressed: _toggleExpanded,
@@ -152,60 +179,27 @@ class _TaskListItemState extends State<TaskListItem>
                     ],
                   ),
                 ),
-                AnimatedSize(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.fastOutSlowIn,
-                  child: FadeTransition(
-                    opacity: _animation,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          if (widget.task.description != null &&
-                              widget.task.description!.isNotEmpty)
-                            Text(
-                              widget.task.description!,
-                              style: TextStyle(
-                                decoration: widget.task.isCompleted
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
-                                color: widget.task.isCompleted
-                                    ? Colors.white38
-                                    : Colors.white70,
-                              ),
+                SizeTransition(
+                  sizeFactor: _animation,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 8.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (widget.task.description != null &&
+                            widget.task.description!.isNotEmpty)
+                          Text(
+                            widget.task.description!,
+                            style: TextStyle(
+                              color: widget.task.isCompleted
+                                  ? Colors.white38
+                                  : Colors.white70,
                             ),
-                          if (widget.task.reminderDateTime != null)
-                            Padding(
-                              padding: const EdgeInsets.only(top: 8.0),
-                              child: Chip(
-                                avatar: Icon(
-                                  EvaIcons.bellOutline,
-                                  size: 16,
-                                  color: theme.colorScheme.onSecondary,
-                                ),
-                                label: Text(
-                                  DateFormat.yMd().add_jm().format(
-                                    widget.task.reminderDateTime!,
-                                  ),
-                                  style: TextStyle(
-                                    color: theme.colorScheme.onSecondary,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                backgroundColor: theme.colorScheme.secondary,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
