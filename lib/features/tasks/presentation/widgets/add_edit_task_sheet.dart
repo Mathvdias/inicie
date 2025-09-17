@@ -16,10 +16,10 @@ Future<void> showAddEditTaskSheet(
     backgroundColor: Colors.transparent,
     builder: (context) {
       return DraggableScrollableSheet(
-        initialChildSize: 0.6,
+        initialChildSize: 0.9,
         minChildSize: 0.3,
-        maxChildSize: 0.9,
-        expand: false,
+        maxChildSize: 1.0,
+        expand: true,
         builder: (context, scrollController) {
           return Container(
             decoration: BoxDecoration(
