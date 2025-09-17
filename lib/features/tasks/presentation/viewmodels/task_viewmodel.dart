@@ -85,7 +85,7 @@ class TaskViewModel extends ChangeNotifier {
       if (newTask.reminderDateTime != null) {
         await _notificationService.scheduleNotification(newTask);
       }
-      await loadTasks(); // Reload to get the updated list
+      await loadTasks();
     } catch (e) {
       _errorMessage = e.toString();
       _setState(ViewState.error);

@@ -70,7 +70,7 @@ class NotificationService {
     );
 
     await _notificationsPlugin.zonedSchedule(
-      task.id.hashCode, // notification id
+      task.id.hashCode,
       task.title,
       task.description ?? 'Don\'t forget!',
       tz.TZDateTime.from(task.reminderDateTime!, tz.local),

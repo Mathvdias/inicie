@@ -17,7 +17,6 @@ class Task {
     this.reminderDateTime,
   }) : id = id ?? _uuid.v4();
 
-  //copyWith method to handle updates immutably
   Task copyWith({
     String? id,
     String? title,
@@ -34,7 +33,6 @@ class Task {
     );
   }
 
-  // Serialization
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -45,7 +43,6 @@ class Task {
     };
   }
 
-  // Deserialization
   factory Task.fromJson(Map<String, dynamic> map) {
     return Task(
       id: map['id'] as String,

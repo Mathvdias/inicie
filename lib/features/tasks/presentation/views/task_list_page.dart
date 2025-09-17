@@ -236,7 +236,7 @@ class _TaskListPageState extends State<TaskListPage>
               onChanged: (Locale? newLocale) {
                 if (newLocale != null) {
                   getIt<ValueNotifier<Locale>>().value = newLocale;
-                  Navigator.of(context).pop(); // Close the dialog after selection
+                  Navigator.of(context).pop();
                 }
               },
             ),
@@ -251,8 +251,6 @@ class _TaskListPageState extends State<TaskListPage>
       ),
     );
   }
-
-  // Removed _buildLanguageSelector() as its logic is now in _showLanguageSelectionDialog
 
   Widget _buildEmptyState(AppLocalizations l10n) {
     return Center(

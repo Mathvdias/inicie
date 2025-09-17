@@ -26,7 +26,7 @@ class TaskRepositoryImpl implements TaskRepository {
   @override
   Future<List<Task>> getTasks({int limit = 20, int offset = 0}) async {
     final tasks = await _getAllTasks();
-    tasks.sort((a, b) => b.id.compareTo(a.id)); // Sort by creation time (desc)
+    tasks.sort((a, b) => b.id.compareTo(a.id));
     return tasks.skip(offset).take(limit).toList();
   }
 

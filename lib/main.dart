@@ -8,19 +8,14 @@ import 'package:inicie/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:timezone/data/latest.dart' as tz;
 
 void main() async {
-  // Ensure that plugin services are initialized
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Configure the service locator
   setupLocator();
 
-  // Initialize timezone data
   tz.initializeTimeZones();
 
-  // Initialize storage service
   await getIt<StorageService>().init();
 
-  // Initialize the notification service
   await getIt<NotificationService>().init();
 
   getIt.registerSingleton<ValueNotifier<Locale>>(

@@ -6,11 +6,11 @@ class AppTheme {
     primaryColor: const Color(0xFF7B4BFF),
     scaffoldBackgroundColor: const Color(0xFF121212),
     colorScheme: const ColorScheme.dark(
-      primary: Color(0xFF7B4BFF), // Roxo vibrante para elementos principais
-      secondary: Color(0xFF03DAC6), // Ciano para acentos (como FABs)
-      surface: Color(0xFF1E1E1E), // Cor de superfície para cards, dialogs
-      error: Color(0xFFCF6679), // Cor para erros
-      onPrimary: Colors.black, // Texto/ícones em cima da cor primária
+      primary: Color(0xFF7B4BFF),
+      secondary: Color(0xFF03DAC6),
+      surface: Color(0xFF1E1E1E),
+      error: Color(0xFFCF6679),
+      onPrimary: Colors.black,
       onSecondary: Colors.black,
       onSurface: Colors.white,
       onSurfaceVariant: Colors.white,
