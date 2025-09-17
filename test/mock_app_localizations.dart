@@ -97,4 +97,8 @@ class MockAppLocalizations implements AppLocalizations {
   @override
   // TODO: implement selectLanguage
   String get selectLanguage => throw UnimplementedError();
+
+  @override
+  // TODO: implement edit
+  String get edit => throw UnimplementedError();
 }
