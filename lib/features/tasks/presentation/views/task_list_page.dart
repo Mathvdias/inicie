@@ -21,7 +21,7 @@ class _TaskListPageState extends State<TaskListPage>
   late final TaskViewModel _viewModel;
   final _scrollController = ScrollController();
   final NotificationService _notificationService = getIt<NotificationService>();
-  Task? _selectedTask;
+  
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -97,11 +97,6 @@ class _TaskListPageState extends State<TaskListPage>
           TextButton(
             onPressed: () {
               _viewModel.deleteTask(taskId);
-              if (_selectedTask?.id == taskId) {
-                setState(() {
-                  _selectedTask = null;
-                });
-              }
               Navigator.of(context).pop();
             },
             child: Text(
@@ -128,9 +123,6 @@ class _TaskListPageState extends State<TaskListPage>
           TextButton(
             onPressed: () {
               _viewModel.deleteAllTasks();
-              setState(() {
-                _selectedTask = null;
-              });
               Navigator.of(context).pop();
             },
             child: Text(
@@ -143,11 +135,7 @@ class _TaskListPageState extends State<TaskListPage>
     );
   }
 
-  void _onTaskSelected(Task task) {
-    setState(() {
-      _selectedTask = task;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -191,21 +179,7 @@ class _TaskListPageState extends State<TaskListPage>
             return _buildEmptyState(l10n);
           }
 
-          return ResponsiveLayout(
-            mobileBody: _buildTaskList(l10n, isMobile: true),
-            desktopBody: Row(
-              children: [
-                Expanded(flex: 1, child: _buildTaskList(l10n)),
-                Expanded(
-                  flex: 2,
-                  child: _TaskDetails(
-                    task: _selectedTask,
-                    key: ValueKey(_selectedTask),
-                  ),
-                ),
-              ],
-            ),
-          );
+          return _buildTaskList(l10n);
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -265,7 +239,7 @@ class _TaskListPageState extends State<TaskListPage>
     );
   }
 
-  Widget _buildTaskList(AppLocalizations l10n, {bool isMobile = false}) {
+  Widget _buildTaskList(AppLocalizations l10n) {
     return FadeTransition(
       opacity: _fadeAnimation,
       child: RefreshIndicator(
@@ -288,8 +262,6 @@ class _TaskListPageState extends State<TaskListPage>
                 onEdit: () =>
                     showAddEditTaskSheet(context, _viewModel, task: task),
                 onDelete: () => _confirmDelete(task.id),
-                onTap: isMobile ? null : () => _onTaskSelected(task),
-                isSelected: !isMobile && _selectedTask?.id == task.id,
               ),
             );
           },
@@ -299,46 +271,4 @@ class _TaskListPageState extends State<TaskListPage>
   }
 }
 
-class _TaskDetails extends StatelessWidget {
-  final Task? task;
 
-  const _TaskDetails({super.key, this.task});
-
-  @override
-  Widget build(BuildContext context) {
-    if (task == null) {
-      return Center(
-        child: Text(AppLocalizations.of(context)!.selectTaskPrompt),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(task!.title, style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 8),
-          if (task!.description != null && task!.description!.isNotEmpty)
-            Text(
-              task!.description!,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          const SizedBox(height: 16),
-          if (task!.reminderDateTime != null)
-            Row(
-              children: [
-                const Icon(EvaIcons.bellOutline, size: 16),
-                const SizedBox(width: 8),
-                Text(
-                  AppLocalizations.of(
-                    context,
-                  )!.reminderOn(task!.reminderDateTime!),
-                ),
-              ],
-            ),
-        ],
-      ),
-    );
-  }
-}
