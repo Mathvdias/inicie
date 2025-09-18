@@ -5,10 +5,21 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:inicie/core/services/notification_service.dart' as _i5;
 import 'package:inicie/features/tasks/data/models/task_model.dart' as _i4;
-import 'package:inicie/features/tasks/domain/repositories/task_repository.dart'
+import 'package:inicie/features/tasks/domain/usecases/add_task_usecase.dart'
+    as _i6;
+import 'package:inicie/features/tasks/domain/usecases/delete_all_tasks_usecase.dart'
+    as _i10;
+import 'package:inicie/features/tasks/domain/usecases/delete_task_usecase.dart'
+    as _i9;
+import 'package:inicie/features/tasks/domain/usecases/get_tasks_usecase.dart'
     as _i2;
+import 'package:inicie/features/tasks/domain/usecases/load_more_tasks_usecase.dart'
+    as _i5;
+import 'package:inicie/features/tasks/domain/usecases/toggle_task_completion_usecase.dart'
+    as _i8;
+import 'package:inicie/features/tasks/domain/usecases/update_task_usecase.dart'
+    as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -26,98 +37,138 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
 
-/// A class which mocks [TaskRepository].
+/// A class which mocks [GetTasksUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTaskRepository extends _i1.Mock implements _i2.TaskRepository {
-  MockTaskRepository() {
+class MockGetTasksUseCase extends _i1.Mock implements _i2.GetTasksUseCase {
+  MockGetTasksUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<List<_i4.Task>> getTasks({int? limit, int? offset}) =>
+  _i3.Future<List<_i4.Task>> call({int? limit = 20, int? offset = 0}) =>
       (super.noSuchMethod(
-            Invocation.method(#getTasks, [], {#limit: limit, #offset: offset}),
+            Invocation.method(#call, [], {#limit: limit, #offset: offset}),
             returnValue: _i3.Future<List<_i4.Task>>.value(<_i4.Task>[]),
           )
           as _i3.Future<List<_i4.Task>>);
+}
+
+/// A class which mocks [LoadMoreTasksUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockLoadMoreTasksUseCase extends _i1.Mock
+    implements _i5.LoadMoreTasksUseCase {
+  MockLoadMoreTasksUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<void> addTask(_i4.Task? task) =>
+  _i3.Future<List<_i4.Task>> call({
+    required int? limit,
+    required int? offset,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#addTask, [task]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
+            Invocation.method(#call, [], {#limit: limit, #offset: offset}),
+            returnValue: _i3.Future<List<_i4.Task>>.value(<_i4.Task>[]),
           )
-          as _i3.Future<void>);
+          as _i3.Future<List<_i4.Task>>);
+}
+
+/// A class which mocks [AddTaskUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAddTaskUseCase extends _i1.Mock implements _i6.AddTaskUseCase {
+  MockAddTaskUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<void> updateTask(_i4.Task? task) =>
+  _i3.Future<void> call({
+    required String? title,
+    String? description,
+    DateTime? reminderDateTime,
+  }) =>
       (super.noSuchMethod(
-            Invocation.method(#updateTask, [task]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<void> deleteTask(String? taskId) =>
-      (super.noSuchMethod(
-            Invocation.method(#deleteTask, [taskId]),
-            returnValue: _i3.Future<void>.value(),
-            returnValueForMissingStub: _i3.Future<void>.value(),
-          )
-          as _i3.Future<void>);
-
-  @override
-  _i3.Future<void> deleteAllTasks() =>
-      (super.noSuchMethod(
-            Invocation.method(#deleteAllTasks, []),
+            Invocation.method(#call, [], {
+              #title: title,
+              #description: description,
+              #reminderDateTime: reminderDateTime,
+            }),
             returnValue: _i3.Future<void>.value(),
             returnValueForMissingStub: _i3.Future<void>.value(),
           )
           as _i3.Future<void>);
 }
 
-/// A class which mocks [NotificationService].
+/// A class which mocks [UpdateTaskUseCase].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockNotificationService extends _i1.Mock
-    implements _i5.NotificationService {
-  MockNotificationService() {
+class MockUpdateTaskUseCase extends _i1.Mock implements _i7.UpdateTaskUseCase {
+  MockUpdateTaskUseCase() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Future<void> init() =>
+  _i3.Future<void> call(_i4.Task? task) =>
       (super.noSuchMethod(
-            Invocation.method(#init, []),
+            Invocation.method(#call, [task]),
             returnValue: _i3.Future<void>.value(),
             returnValueForMissingStub: _i3.Future<void>.value(),
           )
           as _i3.Future<void>);
+}
+
+/// A class which mocks [ToggleTaskCompletionUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockToggleTaskCompletionUseCase extends _i1.Mock
+    implements _i8.ToggleTaskCompletionUseCase {
+  MockToggleTaskCompletionUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<bool> requestPermissions() =>
+  _i3.Future<void> call(_i4.Task? task) =>
       (super.noSuchMethod(
-            Invocation.method(#requestPermissions, []),
-            returnValue: _i3.Future<bool>.value(false),
-          )
-          as _i3.Future<bool>);
-
-  @override
-  _i3.Future<void> scheduleNotification(_i4.Task? task) =>
-      (super.noSuchMethod(
-            Invocation.method(#scheduleNotification, [task]),
+            Invocation.method(#call, [task]),
             returnValue: _i3.Future<void>.value(),
             returnValueForMissingStub: _i3.Future<void>.value(),
           )
           as _i3.Future<void>);
+}
+
+/// A class which mocks [DeleteTaskUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteTaskUseCase extends _i1.Mock implements _i9.DeleteTaskUseCase {
+  MockDeleteTaskUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
 
   @override
-  _i3.Future<void> cancelNotification(String? taskId) =>
+  _i3.Future<void> call(String? taskId) =>
       (super.noSuchMethod(
-            Invocation.method(#cancelNotification, [taskId]),
+            Invocation.method(#call, [taskId]),
+            returnValue: _i3.Future<void>.value(),
+            returnValueForMissingStub: _i3.Future<void>.value(),
+          )
+          as _i3.Future<void>);
+}
+
+/// A class which mocks [DeleteAllTasksUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDeleteAllTasksUseCase extends _i1.Mock
+    implements _i10.DeleteAllTasksUseCase {
+  MockDeleteAllTasksUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<void> call(List<_i4.Task>? tasks) =>
+      (super.noSuchMethod(
+            Invocation.method(#call, [tasks]),
             returnValue: _i3.Future<void>.value(),
             returnValueForMissingStub: _i3.Future<void>.value(),
           )

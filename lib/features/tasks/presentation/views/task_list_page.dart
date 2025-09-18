@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:inicie/core/di/service_locator.dart';
 import 'package:inicie/core/responsive/responsive_layout.dart';
 import 'package:inicie/core/services/notification_service.dart';
-import 'package:inicie/features/tasks/presentation/viewmodels/task_viewmodel.dart';
+import 'package:inicie/features/tasks/presentation/viewmodels/i_task_viewmodel.dart'
+    show ITaskViewModel, ViewState;
 import 'package:inicie/features/tasks/presentation/widgets/add_edit_task_sheet.dart';
 import 'package:inicie/features/tasks/presentation/widgets/task_list_item.dart';
 import 'package:inicie/l10n/app_localizations.dart';
@@ -12,54 +13,59 @@ class TaskListPage extends StatefulWidget {
   const TaskListPage({super.key});
 
   @override
-  State<TaskListPage> createState() => _TaskListPageState();
+  State<TaskListPage> createState() => TaskListPageState();
 }
 
-class _TaskListPageState extends State<TaskListPage>
+class TaskListPageState extends State<TaskListPage>
     with SingleTickerProviderStateMixin {
-  late final TaskViewModel _viewModel;
+  late final ITaskViewModel _viewModel;
   final _scrollController = ScrollController();
   final NotificationService _notificationService = getIt<NotificationService>();
 
-  late AnimationController _animationController;
-  late Animation<double> _fadeAnimation;
+  late AnimationController animationController;
+  late Animation<double> fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    _viewModel = getIt<TaskViewModel>();
-    _viewModel.addListener(_onViewModelChanged);
-    _viewModel.loadTasks();
-    _notificationService.requestPermissions();
-    _scrollController.addListener(_onScroll);
+    _viewModel = getIt<ITaskViewModel>();
+    _viewModel.addListener(onViewModelChanged);
+    _scrollController.addListener(onScroll);
 
-    _animationController = AnimationController(
+    animationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-    _fadeAnimation = CurvedAnimation(
-      parent: _animationController,
+    fadeAnimation = CurvedAnimation(
+      parent: animationController,
       curve: Curves.easeIn,
     );
+
+    _initAsyncOperations();
+  }
+
+  Future<void> _initAsyncOperations() async {
+    await _viewModel.loadTasks();
+    await _notificationService.requestPermissions();
   }
 
   @override
   void dispose() {
-    _viewModel.removeListener(_onViewModelChanged);
-    _scrollController.removeListener(_onScroll);
+    _viewModel.removeListener(onViewModelChanged);
+    _scrollController.removeListener(onScroll);
     _scrollController.dispose();
-    _animationController.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
-  void _onViewModelChanged() {
+  void onViewModelChanged() {
     _showErrorSnackBar();
     if (_viewModel.state == ViewState.idle) {
-      _animationController.forward();
+      animationController.forward();
     }
   }
 
-  void _onScroll() {
+  void onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 100) {
       _viewModel.loadMoreTasks();
@@ -150,6 +156,7 @@ class _TaskListPageState extends State<TaskListPage>
                 child: Text(l10n.deleteAllTasks),
               ),
               PopupMenuItem(
+                key: const Key('selectLanguagePopupMenuItem'),
                 value: 'selectLanguage',
                 child: Text(l10n.selectLanguage),
               ),
@@ -243,10 +250,11 @@ class _TaskListPageState extends State<TaskListPage>
 
   Widget _buildTaskList(AppLocalizations l10n) {
     return FadeTransition(
-      opacity: _fadeAnimation,
+      opacity: fadeAnimation,
       child: RefreshIndicator(
         onRefresh: () => _viewModel.loadTasks(),
         child: ListView.builder(
+          key: const Key('taskList'),
           controller: _scrollController,
           padding: const EdgeInsets.only(bottom: 80),
           itemCount:
@@ -263,7 +271,9 @@ class _TaskListPageState extends State<TaskListPage>
                 onToggle: () => _viewModel.toggleTaskCompletion(task),
                 onEdit: () =>
                     showAddEditTaskSheet(context, _viewModel, task: task),
-                onDelete: () => _confirmDelete(task.id),
+                onDelete: () {
+                  _confirmDelete(task.id);
+                },
               ),
             );
           },

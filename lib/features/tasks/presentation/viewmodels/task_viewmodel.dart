@@ -1,33 +1,54 @@
-import 'package:flutter/foundation.dart';
-import 'package:inicie/core/services/notification_service.dart';
 import 'package:inicie/features/tasks/data/models/task_model.dart';
-import 'package:inicie/features/tasks/domain/repositories/task_repository.dart';
-import 'package:inicie/utils/app_logger.dart';
+import 'package:inicie/features/tasks/domain/usecases/add_task_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/delete_all_tasks_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/delete_task_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/get_tasks_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/load_more_tasks_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/toggle_task_completion_usecase.dart';
+import 'package:inicie/features/tasks/domain/usecases/update_task_usecase.dart';
+import 'package:inicie/features/tasks/presentation/viewmodels/i_task_viewmodel.dart';
 
-enum ViewState { idle, loading, loadingMore, error }
-
-class TaskViewModel extends ChangeNotifier {
-  final TaskRepository _taskRepository;
-  final NotificationService _notificationService;
+class TaskViewModel extends ITaskViewModel {
+  final GetTasksUseCase _getTasksUseCase;
+  final LoadMoreTasksUseCase _loadMoreTasksUseCase;
+  final AddTaskUseCase _addTaskUseCase;
+  final UpdateTaskUseCase _updateTaskUseCase;
+  final ToggleTaskCompletionUseCase _toggleTaskCompletionUseCase;
+  final DeleteTaskUseCase _deleteTaskUseCase;
+  final DeleteAllTasksUseCase _deleteAllTasksUseCase;
 
   static const _kPageLimit = 20;
 
   TaskViewModel({
-    required TaskRepository taskRepository,
-    required NotificationService notificationService,
-  }) : _taskRepository = taskRepository,
-       _notificationService = notificationService;
+    required GetTasksUseCase getTasksUseCase,
+    required LoadMoreTasksUseCase loadMoreTasksUseCase,
+    required AddTaskUseCase addTaskUseCase,
+    required UpdateTaskUseCase updateTaskUseCase,
+    required ToggleTaskCompletionUseCase toggleTaskCompletionUseCase,
+    required DeleteTaskUseCase deleteTaskUseCase,
+    required DeleteAllTasksUseCase deleteAllTasksUseCase,
+  }) : _getTasksUseCase = getTasksUseCase,
+       _loadMoreTasksUseCase = loadMoreTasksUseCase,
+       _addTaskUseCase = addTaskUseCase,
+       _updateTaskUseCase = updateTaskUseCase,
+       _toggleTaskCompletionUseCase = toggleTaskCompletionUseCase,
+       _deleteTaskUseCase = deleteTaskUseCase,
+       _deleteAllTasksUseCase = deleteAllTasksUseCase;
 
   List<Task> _tasks = [];
+  @override
   List<Task> get tasks => _tasks;
 
   ViewState _state = ViewState.idle;
+  @override
   ViewState get state => _state;
 
   bool _hasMoreTasks = true;
+  @override
   bool get hasMoreTasks => _hasMoreTasks;
 
   String _errorMessage = '';
+  @override
   String get errorMessage => _errorMessage;
 
   void _setState(ViewState newState) {
@@ -35,10 +56,11 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   Future<void> loadTasks() async {
     try {
       _setState(ViewState.loading);
-      _tasks = await _taskRepository.getTasks(limit: _kPageLimit, offset: 0);
+      _tasks = await _getTasksUseCase(limit: _kPageLimit, offset: 0);
       _hasMoreTasks = _tasks.length == _kPageLimit;
       _setState(ViewState.idle);
     } catch (e) {
@@ -47,12 +69,13 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> loadMoreTasks() async {
     if (_state == ViewState.loadingMore || !_hasMoreTasks) return;
 
     try {
       _setState(ViewState.loadingMore);
-      final newTasks = await _taskRepository.getTasks(
+      final newTasks = await _loadMoreTasksUseCase(
         limit: _kPageLimit,
         offset: _tasks.length,
       );
@@ -65,12 +88,12 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> addTask(
-    String title, {
+  @override
+  Future<void> addTask({
+    required String title,
     String? description,
     DateTime? reminderDateTime,
   }) async {
-    logger.d("TaskViewModel: addTask called with reminderDateTime: $reminderDateTime");
     if (title.isEmpty) {
       _errorMessage = 'Title cannot be empty.';
       _setState(ViewState.error);
@@ -78,16 +101,11 @@ class TaskViewModel extends ChangeNotifier {
     }
     try {
       _setState(ViewState.loading);
-      final newTask = Task(
+      await _addTaskUseCase(
         title: title,
         description: description,
         reminderDateTime: reminderDateTime,
       );
-      await _taskRepository.addTask(newTask);
-      if (newTask.reminderDateTime != null) {
-        logger.d("TaskViewModel: Calling scheduleNotification for task ${newTask.id}");
-        await _notificationService.scheduleNotification(newTask);
-      }
       await loadTasks();
     } catch (e) {
       _errorMessage = e.toString();
@@ -95,18 +113,11 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> updateTask(Task task) async {
-    logger.d("TaskViewModel: updateTask called for task ${task.id} with reminderDateTime: ${task.reminderDateTime}");
     try {
       _setState(ViewState.loading);
-      await _taskRepository.updateTask(task);
-      if (task.reminderDateTime != null) {
-        logger.d("TaskViewModel: Calling scheduleNotification for task ${task.id}");
-        await _notificationService.scheduleNotification(task);
-      } else {
-        logger.d("TaskViewModel: Calling cancelNotification for task ${task.id}");
-        await _notificationService.cancelNotification(task.id);
-      }
+      await _updateTaskUseCase(task);
       await loadTasks();
     } catch (e) {
       _errorMessage = e.toString();
@@ -114,19 +125,23 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> toggleTaskCompletion(Task task) async {
-    final updatedTask = task.copyWith(isCompleted: !task.isCompleted);
-    if (updatedTask.isCompleted) {
-      await _notificationService.cancelNotification(task.id);
+    try {
+      _setState(ViewState.loading);
+      await _toggleTaskCompletionUseCase(task);
+      await loadTasks();
+    } catch (e) {
+      _errorMessage = e.toString();
+      _setState(ViewState.error);
     }
-    await updateTask(updatedTask);
   }
 
+  @override
   Future<void> deleteTask(String taskId) async {
     try {
       _setState(ViewState.loading);
-      await _notificationService.cancelNotification(taskId);
-      await _taskRepository.deleteTask(taskId);
+      await _deleteTaskUseCase(taskId);
       await loadTasks();
     } catch (e) {
       _errorMessage = e.toString();
@@ -134,13 +149,11 @@ class TaskViewModel extends ChangeNotifier {
     }
   }
 
+  @override
   Future<void> deleteAllTasks() async {
     try {
       _setState(ViewState.loading);
-      for (final task in _tasks) {
-        await _notificationService.cancelNotification(task.id);
-      }
-      await _taskRepository.deleteAllTasks();
+      await _deleteAllTasksUseCase(_tasks);
       await loadTasks();
     } catch (e) {
       _errorMessage = e.toString();

@@ -9,7 +9,7 @@ import 'package:timezone/data/latest.dart' as tz;
 
 import 'package:inicie/utils/app_logger.dart';
 
-void main() async {
+Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
   logger.i("main: WidgetsFlutterBinding ensured.");
 
@@ -24,11 +24,10 @@ void main() async {
 
   await getIt<NotificationService>().init();
   logger.i("main: NotificationService initialized.");
+}
 
-  getIt.registerSingleton<ValueNotifier<Locale>>(
-    ValueNotifier<Locale>(const Locale('pt', 'BR')),
-  );
-
+void main() async {
+  await initializeApp();
   runApp(const InicieApp());
 }
 

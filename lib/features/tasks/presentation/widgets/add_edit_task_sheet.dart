@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:inicie/features/tasks/data/models/task_model.dart';
-import 'package:inicie/features/tasks/presentation/viewmodels/task_viewmodel.dart';
+import 'package:inicie/features/tasks/presentation/viewmodels/i_task_viewmodel.dart';
 import 'package:inicie/l10n/app_localizations.dart' show AppLocalizations;
 import 'package:intl/intl.dart';
 
 Future<void> showAddEditTaskSheet(
   BuildContext context,
-  TaskViewModel viewModel, {
+  ITaskViewModel viewModel, {
   Task? task,
 }) {
   return showModalBottomSheet(
@@ -39,7 +39,7 @@ Future<void> showAddEditTaskSheet(
 }
 
 class _AddEditTaskSheetContent extends StatefulWidget {
-  final TaskViewModel viewModel;
+  final ITaskViewModel viewModel;
   final Task? task;
   final ScrollController scrollController;
 
@@ -226,7 +226,7 @@ class _AddEditTaskSheetContentState extends State<_AddEditTaskSheetContent>
                               widget.viewModel.updateTask(updatedTask);
                             } else {
                               widget.viewModel.addTask(
-                                _titleController.text,
+                                title: _titleController.text,
                                 description: _descriptionController.text,
                                 reminderDateTime: reminder,
                               );

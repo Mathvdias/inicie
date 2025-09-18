@@ -89,5 +89,42 @@ void main() {
     test('taskUpdated returns correct string', () {
       expect(appLocalizations.taskUpdated, 'Tarefa atualizada');
     });
+
+    test('deleteAllTasks returns correct string', () {
+      expect(appLocalizations.deleteAllTasks, 'Deletar Todas as Tarefas');
+    });
+
+    test('deleteAllTasksConfirmation returns correct string', () {
+      expect(appLocalizations.deleteAllTasksConfirmation, 'Você tem certeza que quer deletar todas as tarefas? Esta ação não pode ser desfeita.');
+    });
+
+    test('deleteAll returns correct string', () {
+      expect(appLocalizations.deleteAll, 'Deletar Tudo');
+    });
+
+    test('selectTaskPrompt returns correct string', () {
+      expect(appLocalizations.selectTaskPrompt, 'Selecione uma tarefa para ver seus detalhes');
+    });
+
+    test('reminderOn returns correct string with date', () {
+      final date = '2025-12-31';
+      expect(appLocalizations.reminderOn(date), 'Lembrete em $date');
+    });
+
+    test('expand returns correct string', () {
+      expect(appLocalizations.expand, 'Expandir');
+    });
+
+    test('collapse returns correct string', () {
+      expect(appLocalizations.collapse, 'Recolher');
+    });
+
+    test('selectLanguage returns correct string', () {
+      expect(appLocalizations.selectLanguage, 'Selecionar Idioma');
+    });
+
+    test('edit returns correct string', () {
+      expect(appLocalizations.edit, 'Editar');
+    });
   });
 }
