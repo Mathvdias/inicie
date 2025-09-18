@@ -40,9 +40,6 @@ The application follows the **MVVM (Model-View-ViewModel)** architectural patter
 -   **Repository Pattern:** Abstracts data sources, providing a clean API for the ViewModel.
 -   **Dependency Injection:** Utilizes `get_it` for managing dependencies.
 
-**Note on Use Cases:**
-For simplicity and given the current scope of the application, explicit use case (interactor) layers have been omitted. The ViewModel directly interacts with the Repository. As the application grows in complexity and business logic, a dedicated use case layer can be introduced to encapsulate specific business rules and orchestrate interactions between multiple repositories.
-
 ## Getting Started
 
 ### Prerequisites
@@ -88,7 +85,7 @@ flutter test --coverage
 
 After running tests with coverage, you can view the detailed report by opening `coverage/html/index.html` in your web browser.
 
-**Current Test Coverage:** 75.4% of lines hit.
+**Current Test Coverage:** 83.4% of lines hit.
 
 To get the coverage percentage, you can use a tool like `lcov` or manually inspect the `lcov.info` file. For a quick percentage, you can use:
 
